@@ -1,0 +1,16 @@
+{
+    "Records": [
+        {
+            "keywords": "壁纸",
+            "limit": 2,
+            "print_urls": true,
+            "output_directory": "G:\\img",
+            "proxy": "127.0.0.1:1080",
+            "specific_site": "google.com",
+            "chromedriver": "..\\chromedriver.exe",
+            "extract_metadata": true
+
+        }
+
+    ]
+}
