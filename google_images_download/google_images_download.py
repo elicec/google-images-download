@@ -6,6 +6,9 @@
 
 # Import Libraries
 import sys
+
+import newspaper
+
 version = (3, 0)
 cur_version = sys.version_info
 if cur_version >= version:  # If the Current Version of Python is 3.0 or above
@@ -50,7 +53,7 @@ def user_input():
 
     if object_check['config_file'] != '':
         records = []
-        json_file = json.load(open(config_file_check[0].config_file))
+        json_file = json.load(open(config_file_check[0].config_file,encoding= 'utf-8'))
         for record in range(0,len(json_file['Records'])):
             arguments = {}
             for i in args_list:
@@ -549,6 +552,13 @@ class googleimagesdownload:
         return download_status, download_message
 
 
+    # Download imgges text
+    def download_images_text(self,img_source):
+        a = newspaper.Article(img_source, language='zh')
+        a.download()
+        a.parse()
+        return a.text
+
     # Download Images
     def download_image(self,image_url,image_format,main_directory,dir_name,count,print_urls,socket_timeout,prefix,print_size,no_numbering):
         if print_urls:
@@ -700,6 +710,7 @@ class googleimagesdownload:
             else:
                 #format the item for readability
                 object = self.format_object(object)
+                object['image_text'] = self.download_images_text(object['image_source'])
                 if arguments['metadata']:
                     print("\nImage Metadata: " + str(object))
 
@@ -850,8 +861,8 @@ class googleimagesdownload:
                                 os.makedirs("logs")
                         except OSError as e:
                             print(e)
-                        text_file = open("logs/"+search_keyword[i]+".txt", "w")
-                        text_file.write(json.dumps(items, indent=4, sort_keys=True))
+                        text_file = open("logs/"+search_keyword[i]+".txt", "w", encoding= 'utf-8')
+                        text_file.write(json.dumps(items, indent=4, sort_keys=True, ensure_ascii=False))
                         text_file.close()
 
                     #Related images
